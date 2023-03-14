@@ -1,1 +1,27 @@
 
+on: [push]
+  name: Azure ARM
+  jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+      steps:
+
+        # Checkout code
+      - uses: actions/checkout@main
+
+        # Log into Azure
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICE_PRINCIPAL }}
+
+        # Deploy ARM template
+      - name: Run ARM deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SERVICE_PRINCIPAL }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
+          template: ./ARM-Templates/container-webapp-template.json
+          parameters: storageAccountType=Standard_LRS
+
+        # output containerName variable from template
+      - run: echo ${{ steps.deploy.outputs.containerName }}
