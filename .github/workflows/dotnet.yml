@@ -13,6 +13,12 @@ on:
     paths:
       - 'Application/**'
 
+env: 
+  registryName: lkjhsdevopsreg.azurecr.io
+  repositoryName: wth/dotnetcoreapp
+  dockerFolderPath: Application/src/RazorPagesTestSample
+  tag: ${{ github.run_number }}
+
 jobs:
   build:
 
@@ -30,3 +36,25 @@ jobs:
       run: dotnet build --no-restore ./Application/src/RazorPagesTestSample/RazorPagesTestSample.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal ./Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Log into registry
+          uses: docker/login-action@v1
+          with:
+            registry: ${{ env.registryName }}
+            username: ${{ secrets.ACR_USERNAME }}
+            password: ${{ secrets.ACR_PASSWORD }}
+
+        - name: Docker Build 
+          run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
+          
+        - name: Docker Push 
+          run: docker push $registryName/$repositoryName:$tag
+
+
+           
+           
+        

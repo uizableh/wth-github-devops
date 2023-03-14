@@ -13,7 +13,9 @@ on:
         - lkjhsdevops-dev
         - lkjhsdevops-test
         - lkjhsdevops-prod
-  
+
+
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -38,3 +40,14 @@ jobs:
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Log into registry
+          uses: docker/login-action@v1
+          with:
+            registry: ${{ env.ACR_ENDPOINT }}
+            username: ${{ secrets.ACR_USERNAME }}
+            password: ${{ secrets.ACR_PASSWORD }}
