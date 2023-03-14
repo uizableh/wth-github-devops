@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RazorPagesTestSample.Data;
-// another update to test ACR 4
+// another update to test ACR 5
 
 namespace RazorPagesTestSample
 {
