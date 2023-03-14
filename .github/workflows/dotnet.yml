@@ -37,8 +37,27 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal ./Application/tests/RazorPagesTestSample.Tests/RazorPagesTestSample.Tests.csproj
 
-  docker:
+  deployDev:
+      runs-on: ubuntu-latest
+      environment: dev
+      steps:
+          - uses: actions/checkout@v2
+          - name: Log into registry
+            uses: docker/login-action@v1
+            with:
+              registry: ${{ env.registryName }}
+              username: ${{ secrets.ACR_USERNAME }}
+              password: ${{ secrets.ACR_PASSWORD }}
+
+          - name: Docker Build 
+            run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
+
+          - name: Docker Push 
+            run: docker push $registryName/$repositoryName:$tag
+
+  deployTest:
     runs-on: ubuntu-latest
+    environment: test
     steps:
         - uses: actions/checkout@v2
         - name: Log into registry
@@ -50,18 +69,28 @@ jobs:
 
         - name: Docker Build 
           run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
-          
+
         - name: Docker Push 
           run: docker push $registryName/$repositoryName:$tag
 
-        - uses: azure/login@v1
+  deployProd:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+        - uses: actions/checkout@v2
+        - name: Log into registry
+          uses: docker/login-action@v1
           with:
-            creds: ${{ secrets.SERVICE_PRINCIPAL }}
+            registry: ${{ env.registryName }}
+            username: ${{ secrets.ACR_USERNAME }}
+            password: ${{ secrets.ACR_PASSWORD }}
 
-        - name: Azure WebApp
-          uses: Azure/webapps-deploy@v2.2.6
-          with:
-            # Name of the Azure Web App
-            app-name: lkjhsdevops-dev
-            images: wth/dotnetcoreapp
-              
+        - name: Docker Build 
+          run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
+
+        - name: Docker Push 
+          run: docker push $registryName/$repositoryName:$tag
+
+
+           
+        
