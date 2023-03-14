@@ -26,7 +26,7 @@ jobs:
         subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
         resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
         template: ./ARM-Templates/container-webapp-template.json
-        parameters: webAppName=$targetEnv
+        parameters: webAppName=${{ env.targetEnv }}
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
