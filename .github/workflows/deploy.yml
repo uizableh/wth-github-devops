@@ -19,7 +19,7 @@ jobs:
     - name: Run ARM deploy
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.SERVICE_PRINCIPAL }}
+        subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
         resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
         template: ./ARM-Templates/container-webapp-template.json
         parameters: storageAccountType=Standard_LRS
