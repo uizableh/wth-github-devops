@@ -13,7 +13,7 @@ on:
     paths:
       - 'Application/**'
 
-env:
+env: 
   registryName: lkjhsdevopsreg.azurecr.io
   repositoryName: wth/dotnetcoreapp
   dockerFolderPath: Application/src/RazorPagesTestSample
@@ -46,9 +46,9 @@ jobs:
           registry: ${{ env.registryName }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-      - name: Docker Build
+      - name: Docker Build 
         run: docker build -t $registryName/$repositoryName:$tag --build-arg build_version=$tag $dockerFolderPath
-      - name: Docker Push
+      - name: Docker Push 
         run: docker push $registryName/$repositoryName:$tag
 
   deployDev:
@@ -56,6 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     steps:
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICE_PRINCIPAL }}
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-dev'
@@ -66,6 +69,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICE_PRINCIPAL }}
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-test'
@@ -76,6 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     steps:
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICE_PRINCIPAL }}
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-prod'
