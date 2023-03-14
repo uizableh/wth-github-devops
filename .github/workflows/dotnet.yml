@@ -62,7 +62,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-dev'
-          images: $registryName/$repositoryName
+          images: $registryName/$repositoryName:$tag
 
   deployTest:
     needs: docker
@@ -75,7 +75,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-test'
-          images: $registryName/$repositoryName
+          images: $registryName/$repositoryName:$tag
       
   deployProd:
     needs: docker
@@ -88,4 +88,4 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'lkjhsdevops-prod'
-          images: $registryName/$repositoryName
+          images: $registryName/$repositoryName:$tag
