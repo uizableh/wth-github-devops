@@ -6,12 +6,16 @@ on:
   issues:
     types: [opened]
 
+env: 
+  test: "test2"
+
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
       - run: echo step 1
       - run: echo step 2
+      - run: echo $test
 
 
   job2:
