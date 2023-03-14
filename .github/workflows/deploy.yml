@@ -2,9 +2,17 @@ name: Azure ARM
 
 on:
   workflow_dispatch:
-  
-env:
-  targetEnv: "lkjhsdevops-prod"
+#   workflow_call:
+    inputs:
+      targetEnv:
+        description: 'The target environment to deploy to'
+        default: 'lkjhsdevops-dev'
+        required: true
+        type: choice
+        options:
+        - lkjhsdevops-dev
+        - lkjhsdevops-test
+        - lkjhsdevops-prod
   
 jobs:
   build-and-deploy:
@@ -26,7 +34,7 @@ jobs:
         subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
         resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
         template: ./ARM-Templates/container-webapp-template.json
-        parameters: webAppName=${{ env.targetEnv }}
+        parameters: webAppName=${{ inputs.targetEnv }}
 
       # output containerName variable from template
     - run: echo ${{ steps.deploy.outputs.containerName }}
