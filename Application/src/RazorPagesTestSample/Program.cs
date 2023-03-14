@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RazorPagesTestSample.Data;
-//comment Test for auto deploy - and another change - and another change
+//comment Test for auto deploy - and another change - and another change -another
 
 namespace RazorPagesTestSample
 {
