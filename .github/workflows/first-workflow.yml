@@ -1,0 +1,14 @@
+name: first-workflows
+
+run-name: ${{ github.actor }} is learning GitHub Actions
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo step 1
+      - run: echo step 2
+
