@@ -2,8 +2,9 @@ name: first-workflows
 
 run-name: ${{ github.actor }} is learning GitHub Actions
 
-on: 
-  workflow_dispatch:
+on:
+  issues:
+    types: [opened]
 
 jobs:
   job1:
